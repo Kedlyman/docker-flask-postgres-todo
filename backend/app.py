@@ -5,7 +5,7 @@ import os
 from config import Config
 
 app = Flask(__name__)
-r = redis.Redis(host=os.getenv('REDIS_HOST', 'redis'), port=6379, decode_responses=True)
+r = redis.Redis(host="redis", port=6379, decode_responses=True)
 
 def get_db_connection():
     conn = psycopg2.connect(
