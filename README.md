@@ -25,7 +25,6 @@ It now includes:
   - main.js
 - docker-compose.yml
 - README.md
-- .env
 
 ## How to Run
 
