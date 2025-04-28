@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: Full Stack CI/CD Pipeline
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build-and-push:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -16,9 +16,9 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: 3.13
+        python-version: 3.10
 
-    - name: Install dependencies
+    - name: Install backend dependencies
       run: |
         pip install -r backend/requirements.txt
 
@@ -31,7 +31,7 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Build and Push Docker image
+    - name: Build and Push Backend Docker Image
       uses: docker/build-push-action@v5
       with:
         context: ./backend
@@ -39,16 +39,15 @@ jobs:
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/todo-app:latest
 
-    - name: Deploy to EC2
+    - name: Deploy Full Stack to EC2
       uses: appleboy/ssh-action@v0.1.6
       with:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
         script: |
-          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker pull ${{ secrets.DOCKER_USERNAME }}/todo-app:latest
-          docker stop backend || true
-          docker rm backend || true
-          docker run -d --name backend -p 5000:5000 ${{ secrets.DOCKER_USERNAME }}/todo-app:latest
+          cd /home/ubuntu/app
+          git pull origin main
+          docker-compose pull
+          docker-compose up -d --build
 
