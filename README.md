@@ -1,13 +1,5 @@
 # Dockerized Flask To-Do App with PostgreSQL, Redis, and Nginx
 
-This is an upgraded version of the original Flask To-Do app.
-It now includes:
-
-- Nginx reverse proxy
-- Redis caching
-- Static frontend
-- Full multi-container setup using Docker Compose
-
 ## Project Structure
 
 - backend/
