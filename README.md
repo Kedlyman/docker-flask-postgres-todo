@@ -1,4 +1,4 @@
-# Dockerized Flask To-Do App with PostgreSQL, Redis, and Nginx (Upgraded Version)
+# Dockerized Flask To-Do App with PostgreSQL, Redis, and Nginx
 
 This is an upgraded version of the original Flask To-Do app.
 It now includes:
